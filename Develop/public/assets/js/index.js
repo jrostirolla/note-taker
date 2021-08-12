@@ -5,7 +5,7 @@ const div = window.document.createElement('div');
 div instanceof window.HTMLElement;
 
 // attempted fix for undefined fetch
-const fetch = require('node-fetch')
+
 
 let noteTitle;
 let noteText;
