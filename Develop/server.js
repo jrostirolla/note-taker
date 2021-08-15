@@ -2,7 +2,8 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
-const api = require('./db/db.json')
+const database = require('./db/db.json')
+const uuid = require('./uuid');
 
 // configuration
 const PORT = process.env.port || 3001;
@@ -27,12 +28,26 @@ app.get('/notes', (req, res) =>
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
 
-app.get('/api/notes', (req, res) => 
-    res.json(api)
-);
+app.get('/api/notes', (req, res) => {
+    fs.readFile('./db/db.json', 'utf8', (err, data) => {
+        if (err) {
+            console.log(err)
+        } else {
+
+            const parsedNotes = JSON.parse(data);
+
+            res.json(parsedNotes);
+        }
+})});
 
 app.post('/api/notes', (req, res) => {
-    const newNote = req.body;
+    const {title, text} = req.body;
+
+   const newNote = {
+       title,
+       text,
+       id: uuid(),
+   }
 
     fs.readFile('./db/db.json', 'utf8', (err, data) => {
         if (err) {
