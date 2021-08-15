@@ -1,5 +1,8 @@
 // requirements
 const express = require('express');
+const path = require('path');
+const fs = require('fs');
+const api = require('./db/db.json')
 
 // configuration
 const PORT = process.env.port || 3001;
@@ -23,6 +26,33 @@ app.get('/', (req, res) =>
 app.get('/notes', (req, res) =>
     res.sendFile(path.join(__dirname, '/public/notes.html'))
 );
+
+app.get('/api/notes', (req, res) => 
+    res.json(api)
+);
+
+app.post('/api/notes', (req, res) => {
+    const newNote = req.body;
+
+    fs.readFile('./db/db.json', 'utf8', (err, data) => {
+        if (err) {
+            console.log(err)
+        } else {
+            const parsedNotes = JSON.parse(data);
+
+            parsedNotes.push(newNote);
+
+            fs.writeFile(
+                './db/db.json',
+                JSON.stringify(parsedNotes, null, 4), 
+                (err) => 
+                err ? console.log(err) : console.log('Write successful')
+            )   
+
+        }
+    })
+    res.send(200);
+});
 
 // Listening
 app.listen(PORT, () => {

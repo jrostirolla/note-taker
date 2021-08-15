@@ -1,11 +1,3 @@
-// attempted fix for undefined window
-const Window = require('window');
-const window = new Window();
-const div = window.document.createElement('div');
-div instanceof window.HTMLElement;
-
-// attempted fix for undefined fetch
-
 
 let noteTitle;
 let noteText;
