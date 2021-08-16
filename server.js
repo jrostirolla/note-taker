@@ -6,7 +6,7 @@ const database = require('./db/db.json')
 const uuid = require('./uuid');
 
 // configuration
-const PORT = process.env.port || 8080;
+const PORT = process.env.PORT || 8080;
 
 const app = express();
 const router = express.Router();
